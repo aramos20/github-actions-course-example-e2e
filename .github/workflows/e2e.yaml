@@ -13,7 +13,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          repository: aramos/github-actions-course-example-e2e
+          repository: aramos20/github-actions-course-example-e2e
           ref: main
           secrets: ${{ secrets.access_token || secrets.GITHUB_TOKEN }}
 
