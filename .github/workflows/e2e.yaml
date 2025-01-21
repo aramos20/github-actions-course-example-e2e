@@ -15,7 +15,7 @@ jobs:
         with:
           repository: aramos20/github-actions-course-example-e2e
           ref: main
-          secrets: ${{ secrets.access_token || secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.access_token || secrets.GITHUB_TOKEN }}
 
       - name: Setup code
         uses: actions/setup-node@v4
