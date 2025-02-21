@@ -1,0 +1,46 @@
+name: Learning GitHub Script
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  comment:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Read comment from file
+        id: comment_file
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const fs = require('fs');
+            const comment = fs.readFileSync('.github/ISSUE_COMMENT/comment.md', 'utf8');
+            core.setOutput('comment', comment);
+
+      - name: Comment on new issue
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: ${{ steps.comment_file.outputs.comment }}
+            });
+
+      - name: Add issue to project board
+        if: contains(github.event.issue.labels.*.name, 'bug')
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            github.rest.projects.createCard({
+              column_id: ${{ env.COLUMN_ID }},
+              content_id: context.payload.issue.id,
+              content_type: "Issue"
+            });
+        env:
+          COLUMN_ID: ${{ secrets.PROJECT_COLUMN_ID }}
