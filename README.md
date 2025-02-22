@@ -16,3 +16,5 @@ jobs:
       - name: Run build script
         run: ./.github/scripts/build.sh
         shell: bash
+
+Continuous integration (CI) is a practice where developers integrate tested code into a shared branch several times per day. Continuous delivery (CD) is the next phase of continuous integration (CI) where we also make sure to package the code in a release and store it somewhere - preferably, in an artifact repository. Lastly, Continuous deployment (CD) takes continuous delivery (CD) to the next level by directly deploying our releases to the world.
